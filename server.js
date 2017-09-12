@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
+
 const {PORT, DATABASE_URL} = require('./config');
 
 const app = express();
@@ -10,11 +12,29 @@ const {Post} = require('./models');
 app.use(bodyParser.json());
 
 app.get('/posts', (req, res) => {
-
+	Post.find()
+		.limit(10)
+		.then(posts => {
+			res.json({
+				post: posts.map(
+					(post) => post.apiRepr())
+			});
+		})
+		.catch(
+			err => {
+				console.error(err);
+				res.status(500).json({message: 'Internal Server Error'});
+			});
 });
 
 app.get('/posts/:id', (req, res) => {
-
+	Post.findById(req.params.id)
+		.then(post => res.json(post.apiRepr()))
+		.catch(
+			err => {
+				console.error(err);
+				res.status(500).json({message: 'Internal Server Error'})
+			});
 });
 
 
