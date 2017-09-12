@@ -50,9 +50,24 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT){
 			.on('error', err => {
 				mongoose.disconnect();
 				reject(err);
-			})
-		})
-	})
+			});
+		});
+	});
+}
+
+function stopServer() {
+	return mongoose.disconnect().then(() => {
+		return new Promise((resolve, reject) => {
+			console.log('Closing server');
+			server.close(err => {
+				if (err) {
+					return reject(err);
+				}
+			resolve();
+			});
+		});
+	});
+
 }
 
 if (require.main === module) {
