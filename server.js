@@ -39,11 +39,32 @@ app.get('/posts/:id', (req, res) => {
 
 
 app.post('/posts', (req, res) => {
+	let requiredParams = ['title', 'content', 'firstName', 'lastName'];
 
-});
+	for(let i = 0; i < requiredParams.length; i++) {
+		const field = requiredParams[i];
 
-app.post('/posts/:id', (req, res) => {
-
+		if(!(field in req.body)) {
+			const message = `Field ${field} is missing from the request body`;
+			console.error(message);
+			return res.status(400).send(message);
+		}
+	}
+	
+	Post
+	.create({
+		title: req.body.title,
+		content: req.body.content,
+		author: {
+			firstName: req.body.firstName,
+			lastName: req.body.lastName
+		}})
+	.then(
+		post => res.status(201).json(post.apiRepr()))
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({message: 'Internal Server Error'});
+	});
 });
 
 app.put('/posts/:id', (req, res) => {
