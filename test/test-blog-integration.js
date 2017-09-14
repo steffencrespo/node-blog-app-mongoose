@@ -7,6 +7,7 @@ const should = chai.should();
 
 const {Post} = require('../models');
 const {runServer, app, stopServer} = require('../server');
+const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);
 
@@ -38,7 +39,7 @@ function dropDatabase() {
 describe('Blog Posting API', function() {
 
 	before(function() {
-		return runServer();
+		return runServer(TEST_DATABASE_URL);
 	});
 
 	beforeEach(function() {
@@ -60,6 +61,18 @@ describe('Blog Posting API', function() {
 				res.should.have.status(200);
 				// res.body.post[0].should.have.length.of(10);
 			});
+	});
+
+	it('should return specific post when the GET request has the ID parameter', function() {
+		const post = [];
+		let idForGetRequest;
+		Post.findOne().then(function(res) {
+			post.push(res);
+		})
+		.then(function() {
+			idForGetRequest = post[0]._id;
+			console.log(idForGetRequest)
+		})
 	});
 
 });
