@@ -15,10 +15,10 @@ app.get('/posts', (req, res) => {
 	Post.find()
 		.limit(10)
 		.then(posts => {
-			res.json({
-				post: posts.map(
+			res.status(200).json(
+				posts.map(
 					(post) => post.apiRepr())
-			});
+			);
 		})
 		.catch(
 			err => {

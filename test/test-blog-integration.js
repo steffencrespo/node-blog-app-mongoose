@@ -69,8 +69,8 @@ describe('Blog Posting API', function() {
 			.get('/posts')
 			.then(function(res) {
 				res.should.have.status(200);
-				res.body.post.should.have.length.of.at.least(10);
-				res.body.post.forEach(function(post) {
+				res.body.should.have.length.of.at.least(10);
+				res.body.forEach(function(post) {
 					post.should.include.keys('id','title', 'content', 'author');
 				})
 			});
@@ -78,8 +78,6 @@ describe('Blog Posting API', function() {
 
 	it('should create a new post based on user request', function() {
 		let newPost = generatePostInputForRequest();
-		console.log(typeof(newPost))
-		console.log(newPost)
 		return chai.request(app)
 			.post('/posts')
 			.send(newPost)
@@ -117,5 +115,29 @@ describe('Blog Posting API', function() {
 			})
 
 	});
+
+	it('should delete an existing post', function() {
+		let postCount = '';
+		return Post.find()
+			.then(function(res) {
+				postCount = res.length;
+			});
+
+		return Post.findOne()
+			.then(function(postToDelete) {
+				postId = postToDelete;
+				return chai.request(app)
+					.delete(`/posts/${postToDelete.id}`)
+					.then(function(res) {
+						res.should.have.status(204);
+					})
+			})
+			.then(function() {
+				return Post.find()
+					.then(function(res) {
+						res.length.should
+					})
+			})
+	})
 
 });
