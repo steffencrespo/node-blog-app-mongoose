@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: ggkuyBGYYYoDJeqI7qS3+nm+3ChoO5N9yIs0Ij5WZMeEwlkDh80LXR+OOlc5/BQuk/sZD5dJHK8kddobfzNJvScTU8Sz6tWK4veRccEQtPBBirZhWf/V8VnFrdEWz7DX0z8i+090hf4EcsVTsDVcEdY4LBlB2AVj2uWch46Rx2iuaSC34cYwyy6p3xIPqf+u5xgLWlMfBms7FvSF1pvGG2iHaeHoPHz3uZfr9msd82hGeDqzrZBscdS4Gqlyubq8MuzmUGrCh+zbtxZIw+JC502jgiBCsrOh1dVbjJhSqnhlreaO72raGQNC8PLYgPgaISG7HEXxEwAX0KZjiNQiclzOJPkiaUtTb615E22MOhuZ8Ufiklnhfodx1PaM+vkQj8hDOrup32C+qVzvdPe0ehnnYHD/neGY+TsawY7W4MOw7FVzereSkCaeEnoie1BIgZ/4/nRh2fD9KC9hLTAaLtu/3fylb2x5J7Ju8kfxJH67YNmYNWv2blqc17pvM8WI7eIoHELOItDA3FAgDUNd5l0CVh0Tl6azdLsVyuuY+wnCnnVx6aJK2J8uACPUYGWKr046l5fJz1XLtvIJ3StbWlqB2sM3WHHuuBvgfLSzpVtbEGus4G91Pzkbcc8zun26B+zYcntIlZ3qqYEu0kKfumqNHDJAzZYUqoUMS03dCa4=
+  app: radiant-springs-38443
+  on:
+    repo: steffencrespo/node-blog-app-mongoose
