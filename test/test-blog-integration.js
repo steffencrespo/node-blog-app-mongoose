@@ -22,6 +22,16 @@ function generatePostInput() {
 	}
 }
 
+function generatePostInputForRequest() {
+	let postInput = generatePostInput();
+	return {
+		title: postInput.title,
+		content: postInput.content,
+		firstName: postInput.author.firstName,
+		lastName: postInput.author.lastName
+	}
+}
+
 function seedData() {
 	const posts = [];
 
@@ -59,20 +69,24 @@ describe('Blog Posting API', function() {
 			.get('/posts')
 			.then(function(res) {
 				res.should.have.status(200);
-				// res.body.post[0].should.have.length.of(10);
+				res.body.post.should.have.length.of.at.least(10);
+				res.body.post.forEach(function(post) {
+					post.should.include.keys('id','title', 'content', 'author');
+				})
 			});
 	});
 
-	it('should return specific post when the GET request has the ID parameter', function() {
-		const post = [];
-		let idForGetRequest;
-		Post.findOne().then(function(res) {
-			post.push(res);
-		})
-		.then(function() {
-			idForGetRequest = post[0]._id;
-			console.log(idForGetRequest)
-		})
+	it('should create a new post based on user request', function() {
+		let newPost = generatePostInputForRequest();
+		console.log(typeof(newPost))
+		console.log(newPost)
+		return chai.request(app)
+			.post('/posts')
+			.send(newPost)
+			.then(function(res) {
+				res.should.have.status(201);
+				res.body.should.include.keys('id','title', 'content', 'author');
+			});
 	});
 
 });
