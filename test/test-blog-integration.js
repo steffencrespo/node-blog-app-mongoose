@@ -89,4 +89,33 @@ describe('Blog Posting API', function() {
 			});
 	});
 
+	it('should change a existing post', function() {
+		let updatePost = {
+			title: 'lololololooooo',
+			content: 'the quiasd lkasdlknasckneoirnfoimscd',
+			firstName: 'leonardo',
+			lastName: 'steffen'
+		};
+
+		return Post.findOne()
+			.then(function(post) {
+				updatePost.id = post.id;
+			})
+			.then(function() {
+				return chai.request(app)
+					.put(`/posts/${updatePost.id}`)
+					.send(updatePost)
+					.then(function(res) {
+						res.should.have.status(204);
+					});
+			})
+			.then(function() {
+				return Post.findById(updatePost.id)
+			})
+			.then(function(returnedPost) {
+				returnedPost.apiRepr().content.should.equal(updatePost.content);
+			})
+
+	});
+
 });
